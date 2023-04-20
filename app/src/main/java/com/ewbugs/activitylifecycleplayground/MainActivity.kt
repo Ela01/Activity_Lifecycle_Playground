@@ -9,7 +9,7 @@ import com.ewbugs.activitylifecycleplayground.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private var isFirstLoad = true
+    private var numberOfLoads = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,13 +34,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (isFirstLoad) {
-            binding.textViewRefreshStatus.text =  "Welcome to the app this will be your feed"
-            isFirstLoad = false
-        }
-        else {
-            binding.textViewRefreshStatus.text = "Your feed had been updated..."
-        }
+        numberOfLoads++
+        binding.textViewRefreshStatus.text = "Welcome to your fee! We have loaded your content $numberOfLoads time(s)"
     }
 
 
