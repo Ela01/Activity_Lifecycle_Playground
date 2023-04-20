@@ -5,11 +5,15 @@ import android.os.Bundle
 //import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.ewbugs.activitylifecycleplayground.databinding.ActivityMainBinding
+import java.util.*
+import kotlin.concurrent.fixedRateTimer
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private var numberOfLoads = 0
+    var seconds = 0
+    //period is in milliseconds
+    lateinit var timer: Timer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +24,9 @@ class MainActivity : AppCompatActivity() {
         binding.buttonExit.setOnClickListener {
             //Log.d("ElaWieczorek", "In the button click listener...")
             finish()
+
+
+
         }
 
 
@@ -34,9 +41,19 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        numberOfLoads++
-        binding.textViewRefreshStatus.text = "Welcome to your fee! We have loaded your content $numberOfLoads time(s)"
+        fixedRateTimer(period = 1000L) {
+            runOnUiThread {
+                seconds++
+                binding.textViewTimer.text = "You have been staring at this screen for $seconds seconds!"
+            }
+        }
     }
+    override fun onPause() {
+        super.onPause()
+        timer.cancel()
+    }
+
+
 
 
 /*
