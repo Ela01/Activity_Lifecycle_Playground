@@ -1,17 +1,16 @@
 package com.ewbugs.activitylifecycleplayground
 
 import android.os.Bundle
-//import android.util.Log
-//import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.ewbugs.activitylifecycleplayground.databinding.ActivityMainBinding
+import java.io.File
 import java.util.*
-import kotlin.concurrent.fixedRateTimer
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     var seconds = 0
+
     //period is in milliseconds
     lateinit var timer: Timer
 
@@ -26,9 +25,21 @@ class MainActivity : AppCompatActivity() {
             finish()
 
 
+        }
+    }
+
+        // On destroy example-- Not good to save data in onDestroy--unreliable
+        override fun onDestroy() {
+            super.onDestroy()
+            val userMessage = binding.editTextMessage.text //trying to 'save this message outside of our app launches'
+            //A specific place we can save our file without asking for the user's permission, and it
+            //would just store it within our apps file system
+            // To access this -> Device File explorer -> com.ewbugs.activitylifecycleplayground...-> sync -> files -> user message.txt
+            //very useful function: '.writetext' -> has all of the complexity under the hood for writing
+            //text to a file.
+            File(filesDir, "user message.txt").writeText(userMessage.toString())
 
         }
-
 
         // 'Log.d' -> 'Log' for Logcat, 'd' for debug
         // You can go into the Logcat and filter by the 'tag' by clicking into the search box.
@@ -37,23 +48,21 @@ class MainActivity : AppCompatActivity() {
         //.................................................
         // A second way would be to mark a break-point, click the debugger icon, and then run the app.
         //.................................................
-    }
-
-    override fun onResume() {
-        super.onResume()
-        fixedRateTimer(period = 1000L) {
-            runOnUiThread {
-                seconds++
-                binding.textViewTimer.text = "You have been staring at this screen for $seconds seconds!"
-            }
-        }
-    }
-    override fun onPause() {
-        super.onPause()
-        timer.cancel()
-    }
 
 
+//    override fun onResume() {
+//        super.onResume()
+//        fixedRateTimer(period = 1000L) {
+//            runOnUiThread {
+//                seconds++
+//                binding.textViewTimer.text = "You have been staring at this screen for $seconds seconds!"
+//            }
+//        }
+//    }
+//    override fun onPause() {
+//        super.onPause()
+//        timer.cancel()
+//    }
 
 
 /*
