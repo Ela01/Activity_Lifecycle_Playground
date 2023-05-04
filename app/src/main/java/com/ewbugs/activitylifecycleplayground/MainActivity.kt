@@ -12,10 +12,11 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    var seconds = 0
+//    var seconds = 0
 
     //period is in milliseconds
-    lateinit var timer: Timer
+//    lateinit var timer: Timer
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,13 +28,28 @@ class MainActivity : AppCompatActivity() {
             //Log.d("ElaWieczorek", "In the button click listener...")
             showDialog()
         }
-        val callback = onBackPressedDispatcher.addCallback(this) {
-            showDialog()
-        } //make sure to add the dependency
+
+        binding.buttonSave.setOnClickListener { saveMessage() }
+        onBackPressedDispatcher.addCallback(this) { showDialog() } //make sure to add the dependency
+        binding.textViewSavedMessage.text = savedInstanceState?.getString("savedMessage")
+    }
+
+    //function to help save data when data is destroyed in the process of rotating phone frame (portrait-landscape)
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        val savedTextViewMessage = binding.textViewSavedMessage.text.toString()
+        outState.putString("savedMessage", savedTextViewMessage)
+    }
+    private fun saveMessage() {
+
+        val userMessage = binding.editTextMessage.text
+        File(filesDir, "user message.txt").writeText(userMessage.toString())
+        binding.textViewSavedMessage.text = "Your message has been saved!\n\nMessage Preview:\n\n$userMessage"
+        binding.editTextMessage.setText("")
 
     }
 
-        // On destroy example-- Not good to save data in onDestroy--unreliable
+    // On destroy example-- Not good to save data in onDestroy--unreliable
 //        override fun onDestroy() {
 //            super.onDestroy()
 //            val userMessage = binding.editTextMessage.text //trying to 'save this message outside of our app launches'
@@ -46,15 +62,24 @@ class MainActivity : AppCompatActivity() {
 //
 //        }
 
-    private fun showDialog(){
+    private fun showDialog() {
 
         AlertDialog.Builder(this)
             .setTitle("Warning!")
-            .setMessage("You are about to leave the App, are you sure you want to exit?")
+//            .setMessage("You are about to leave the App, are you sure you want to exit?")
+            .setView(R.layout.dialog_warning)
             .setPositiveButton("Yes") { _, _ -> //firstParameter, secondParameter ->
                 finish()
             }
             .setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setNeutralButton("More info") { dialog, _ ->
+                Toast.makeText(
+                    this,
+                    "This is where the 'more info' screen could be!",
+                    Toast.LENGTH_LONG
+                ).show()
                 dialog.dismiss()
             }
 
@@ -63,14 +88,13 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-        // 'Log.d' -> 'Log' for Logcat, 'd' for debug
-        // You can go into the Logcat and filter by the 'tag' by clicking into the search box.
-        // This is one way you can find out where you are
-        //Log.d("ElaWieczorek", "I'm in onCreate")
-        //.................................................
-        // A second way would be to mark a break-point, click the debugger icon, and then run the app.
-        //.................................................
+    // 'Log.d' -> 'Log' for Logcat, 'd' for debug
+    // You can go into the Logcat and filter by the 'tag' by clicking into the search box.
+    // This is one way you can find out where you are
+    //Log.d("ElaWieczorek", "I'm in onCreate")
+    //.................................................
+    // A second way would be to mark a break-point, click the debugger icon, and then run the app.
+    //.................................................
 
 
 //    override fun onResume() {
