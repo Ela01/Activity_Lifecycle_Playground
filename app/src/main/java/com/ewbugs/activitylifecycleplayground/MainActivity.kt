@@ -1,6 +1,7 @@
 package com.ewbugs.activitylifecycleplayground
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.ewbugs.activitylifecycleplayground.databinding.ActivityMainBinding
 import java.io.File
@@ -29,17 +30,21 @@ class MainActivity : AppCompatActivity() {
     }
 
         // On destroy example-- Not good to save data in onDestroy--unreliable
-        override fun onDestroy() {
-            super.onDestroy()
-            val userMessage = binding.editTextMessage.text //trying to 'save this message outside of our app launches'
-            //A specific place we can save our file without asking for the user's permission, and it
-            //would just store it within our apps file system
-            // To access this -> Device File explorer -> com.ewbugs.activitylifecycleplayground...-> sync -> files -> user message.txt
-            //very useful function: '.writetext' -> has all of the complexity under the hood for writing
-            //text to a file.
-            File(filesDir, "user message.txt").writeText(userMessage.toString())
+//        override fun onDestroy() {
+//            super.onDestroy()
+//            val userMessage = binding.editTextMessage.text //trying to 'save this message outside of our app launches'
+//            //A specific place we can save our file without asking for the user's permission, and it
+//            //would just store it within our apps file system
+//            // To access this -> Device File explorer -> com.ewbugs.activitylifecycleplayground...-> sync -> files -> user message.txt
+//            //very useful function: '.writetext' -> has all of the complexity under the hood for writing
+//            //text to a file.
+//            File(filesDir, "user message.txt").writeText(userMessage.toString())
+//
+//        }
 
-        }
+    override fun onBackPressed() {
+        Toast.makeText(this, "Back button pressed", Toast.LENGTH_LONG).show()
+    }
 
         // 'Log.d' -> 'Log' for Logcat, 'd' for debug
         // You can go into the Logcat and filter by the 'tag' by clicking into the search box.
