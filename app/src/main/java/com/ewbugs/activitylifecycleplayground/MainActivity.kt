@@ -2,6 +2,8 @@ package com.ewbugs.activitylifecycleplayground
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.addCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.ewbugs.activitylifecycleplayground.databinding.ActivityMainBinding
 import java.io.File
@@ -23,10 +25,12 @@ class MainActivity : AppCompatActivity() {
         // Another way to show that you are in 'onDestroy'
         binding.buttonExit.setOnClickListener {
             //Log.d("ElaWieczorek", "In the button click listener...")
-            finish()
-
-
+            showDialog()
         }
+        val callback = onBackPressedDispatcher.addCallback(this) {
+            showDialog()
+        } //make sure to add the dependency
+
     }
 
         // On destroy example-- Not good to save data in onDestroy--unreliable
@@ -42,9 +46,23 @@ class MainActivity : AppCompatActivity() {
 //
 //        }
 
-    override fun onBackPressed() {
-        Toast.makeText(this, "Back button pressed", Toast.LENGTH_LONG).show()
+    private fun showDialog(){
+
+        AlertDialog.Builder(this)
+            .setTitle("Warning!")
+            .setMessage("You are about to leave the App, are you sure you want to exit?")
+            .setPositiveButton("Yes") { _, _ -> //firstParameter, secondParameter ->
+                finish()
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+
+            .show()
+
     }
+
+
 
         // 'Log.d' -> 'Log' for Logcat, 'd' for debug
         // You can go into the Logcat and filter by the 'tag' by clicking into the search box.
