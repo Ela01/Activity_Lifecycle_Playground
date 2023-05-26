@@ -5,4 +5,7 @@
     <string name="please_type_the_message_you_want_to_save_here">Please type the message you want to save here</string>
     <string name="save_activity">Save Activity</string>
     <string name="save_message">Save Message</string>
+    <string name="We_have_made_it_into_out_new_Fragment_">We have made it into our new Fragment. This is the onViewCreated() code.</string>
+    <string name="clear_the_screen">Clear the Screen!</string>
+    <string name="warning">Warning!</string>
 </resources>

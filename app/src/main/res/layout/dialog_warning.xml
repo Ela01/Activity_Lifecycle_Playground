@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     
     <ImageView
+        android:contentDescription="@string/warning"
         android:id="@+id/image_view_icon"
         android:src="@drawable/icon_warning_amber_24"
         android:layout_width="96dp"

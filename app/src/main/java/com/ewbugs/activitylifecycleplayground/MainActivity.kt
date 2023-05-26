@@ -5,13 +5,15 @@ import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.commit
 import com.ewbugs.activitylifecycleplayground.databinding.ActivityMainBinding
 import java.io.File
-import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), TestFragment.TestFragmentListener {
 
     private lateinit var binding: ActivityMainBinding
+    private val testFragment = TestFragment()
+
 //    var seconds = 0
 
     //period is in milliseconds
@@ -30,8 +32,42 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.buttonSave.setOnClickListener { saveMessage() }
+        binding.buttonShowFragment.setOnClickListener { showFragment() }
+        binding.buttonRemoveFragment.setOnClickListener { removeFragment() }
         onBackPressedDispatcher.addCallback(this) { showDialog() } //make sure to add the dependency
         binding.textViewSavedMessage.text = savedInstanceState?.getString("savedMessage")
+    }
+
+    /*
+    All a fragment transaction is is a thing you can do with a fragment in relation to where its host would
+be.
+You can add fragments, you can replace fragments, remove fragments, these all fragment transactions
+and this fragment manager thing that we have access to that takes the fragment object that you give
+it, it will attach it to whatever host, whatever context it needs.
+Attaching to could be a container, could be an activity, and then it takes care of instantiating the
+fragment in terms of the lifecycle.
+So things like on create, on create view, it is the fragment manager's job to do that and the information,
+the instruction to do that is your fragment transaction.
+So scary sounding word fragment transaction, but all it is is an instruction to do something with a
+fragment and the fragment.
+Host.
+     */
+
+    private fun showFragment() {
+        //for '.commit' must install dependency-> implementation 'androidx.fragment:fragment-ktx:1.5.7'
+        //Below is all the code you we need to add a new fragment into the container whenever
+        //the user clicks the show fragment button.
+        supportFragmentManager.commit {
+            add(R.id.fragment_container, testFragment)
+        }
+
+
+    }
+
+    private fun removeFragment() {
+        supportFragmentManager.commit {
+            remove(testFragment)
+        }
     }
 
     //function to help save data when data is destroyed in the process of rotating phone frame (portrait-landscape)
@@ -84,7 +120,12 @@ class MainActivity : AppCompatActivity() {
             }
 
             .show()
+    }
 
+    override fun clearActivityScreen() {
+        binding.editTextMessage.setText("")
+        binding.textViewSavedMessage.text = ""
+        removeFragment()
     }
 
 

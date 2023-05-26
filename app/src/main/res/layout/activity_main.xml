@@ -51,6 +51,34 @@
             app:layout_constraintTop_toBottomOf="@id/button_save"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            tools:layout="@layout/fragment_test"
+            app:layout_constraintTop_toBottomOf="@id/button_exit"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/fragment_container"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <Button
+            android:id="@+id/button_show_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/fragment_container"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="Show Fragment"/>
+
+        <Button
+            android:id="@+id/button_remove_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/button_show_fragment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="Remove Fragment"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
